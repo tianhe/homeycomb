@@ -1,0 +1,1 @@
+StreetEasy::Client.api_key = ENV['STREETEASY_KEY']

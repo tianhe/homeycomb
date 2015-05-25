@@ -27,8 +27,6 @@ class Listing
   field :price,         type: Integer
   field :maintenance,   type: Integer
   field :taxes,         type: Integer
-  field :open_house_start,  type: Date
-  field :open_house_end,  type: Date
   field :source_id,       type: String
   field :source,          type: String
   field :source_created_at,  type: String

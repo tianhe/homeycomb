@@ -38,11 +38,12 @@ gem 'omniauth-facebook'
 gem 'spring',        group: :development
 
 #real estate
-gem 'street_easy', path: '../street_easy'
 gem 'rubillow'
 
 group :production do
   gem 'rails_12factor'
+
+  gem 'street_easy', source: 'https://gem.fury.io/thecarpelada/'
 end
 
 group :development, :test do
@@ -57,4 +58,6 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'database_cleaner'
   gem 'dotenv-rails'
+
+#  gem 'street_easy', path: '../street_easy'
 end

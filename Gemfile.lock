@@ -1,12 +1,6 @@
-PATH
-  remote: ../street_easy
-  specs:
-    street_easy (0.0.5)
-      json
-      recursive-open-struct
-
 GEM
   remote: https://rubygems.org/
+  remote: https://gem.fury.io/thecarpelada/
   specs:
     actionmailer (4.2.0)
       actionpack (= 4.2.0)
@@ -288,6 +282,9 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    street_easy (0.0.5)
+      json
+      recursive-open-struct
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)

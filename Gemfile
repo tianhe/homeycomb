@@ -22,6 +22,7 @@ gem 'turbolinks'
 
 #background job
 gem 'sidekiq'
+gem 'sinatra', require: nil
 
 #core
 gem 'sdoc', '~> 0.4.0',          group: :doc
@@ -39,11 +40,10 @@ gem 'spring',        group: :development
 
 #real estate
 gem 'rubillow'
+gem 'street_easy', source: 'https://gem.fury.io/thecarpelada/' #path: '../street_easy'
 
 group :production do
   gem 'rails_12factor'
-
-  gem 'street_easy', source: 'https://gem.fury.io/thecarpelada/'
 end
 
 group :development, :test do
@@ -58,6 +58,4 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'database_cleaner'
   gem 'dotenv-rails'
-
-#  gem 'street_easy', path: '../street_easy'
 end

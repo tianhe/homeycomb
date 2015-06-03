@@ -36,6 +36,9 @@ class User
   before_save :ensure_authentication_token
   before_validation :ensure_password
 
+  has_many :user_listings
+
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]

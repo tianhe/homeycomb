@@ -32,7 +32,10 @@ class Listing
   field :source_created_at,  type: String
 
   validates :source_id, presence: true
+  validates :source, presence: true
   validates :source_id, uniqueness: { scope: :source, message: 'should be unique for source' }
+
+  has_many :user_listings
 
   def self.import_from_street_easy street_easy_listings
     filter_fields = Listing.fields.keys

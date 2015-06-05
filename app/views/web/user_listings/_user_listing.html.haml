@@ -1,0 +1,35 @@
+%tr
+  %td
+    = link_to user_listing.listing.url, user_listing.listing.url, target: '_blank'
+  %td
+    = user_listing.listing.area_name
+  %td
+    = user_listing.listing.status
+  %td
+    = user_listing.listing.bedrooms
+  %td    
+    = number_with_delimiter user_listing.listing.size_sqft
+  %td    
+    = number_to_currency user_listing.listing.price, precision: 0
+  %td
+    = number_to_currency user_listing.listing.ppsf, precision: 0
+  %td
+    = number_to_percentage user_listing.percent_down, precision: 0
+  %td
+    = number_to_percentage user_listing.interest_rate*100, precision: 3
+  %td
+    = number_to_currency user_listing.gross_monthly_cost, precision: 0
+  %td
+    = number_to_currency user_listing.net_monthly_cost, precision: 0
+  %td
+    = number_to_currency user_listing.airbnb_daily_total, precision: 0
+  %td
+    = user_listing.airbnb_fill_days
+  %td
+    = number_to_currency user_listing.airbnb_monthly_gross_profit, precision: 0
+  %td
+    = number_to_currency user_listing.net_monthly_cost_including_airbnb , precision: 0
+  %td
+    = number_to_currency user_listing.initial_cash_requirement, precision: 0
+  %td
+    = number_to_currency user_listing.five_year_cash_requirement, precision: 0

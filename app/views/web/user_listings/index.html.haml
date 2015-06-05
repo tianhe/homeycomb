@@ -1,0 +1,70 @@
+%nav.navbar-fixed-top
+  .container-fluid
+    .navbar-header
+      = link_to '/', class: 'navbar-brand' do
+        =image_tag 'logo.png', alt: 'Homeycomb Logo', class: 'logo'
+    .collapse.navbar-collapse
+      %ul.nav.nav-pills.navbar-nav.navbar-right
+        %li.home
+          = link_to "Listings", web_user_listings_path
+        / %li.profile
+        /   = link_to profile_path do
+        /     %span.glyphicon.glyphicon-user
+        %li
+          = link_to logout_path do
+            %span.glyphicon.glyphicon-off
+
+#main-container
+  .row
+    %h1
+      Listings
+  .table-responsive
+    %table.table.table-striped.table-bordered.table-hover.table-condensed
+      %thead
+        %tr
+          %th
+            URL
+          %th
+            Neighborhood
+          %th
+            Status
+          %th
+            Beds
+          %th
+            Sq Ft
+          %th
+            Price
+          %th
+            Price/Sq Ft
+          %th
+            Percent Down
+          %th
+            Interest Rate
+          %th
+            Monthly Cost (Mort + CC + Tax)
+          %th
+            Monthly Cost (Net Tax Benefits)
+          %th
+            Airbnb Rate
+          %th
+            Airbnb Fill Days
+          %th
+            Net Airbnb
+          %th
+            Total (include Tax + Airbnb)
+          %th
+            Initial Cash Required
+          %th
+            5 Year Cash Requirement
+
+      %colgroup
+        %col{ span: '5', class: 'basic-info' }
+        %col{ span: '1', class: 'input' }
+        %col{ span: '1', class: 'basic-info' }
+        %col{ span: '2', class: 'input' }
+        %col{ span: '2', class: 'cost-calc' }
+        %col{ span: '2', class: 'airbnb input' }
+        %col{ span: '2', class: 'airbnb cost-calc' }
+        %col{ span: '2', class: 'cost-calc' }
+      %tbody
+        = render @user_listings

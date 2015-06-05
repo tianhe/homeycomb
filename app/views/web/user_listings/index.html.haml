@@ -19,7 +19,7 @@
     %h1
       Listings
   .table-responsive
-    %table.table.table-striped.table-bordered.table-hover.table-condensed
+    %table.table.table-bordered.table-hover.table-condensed
       %thead
         %tr
           %th
@@ -58,13 +58,11 @@
             5 Year Cash Requirement
 
       %colgroup
-        %col{ span: '5', class: 'basic-info' }
-        %col{ span: '1', class: 'input' }
-        %col{ span: '1', class: 'basic-info' }
+        %col{ span: '7', class: 'basic-info' }
         %col{ span: '2', class: 'input' }
-        %col{ span: '2', class: 'cost-calc' }
-        %col{ span: '2', class: 'airbnb input' }
-        %col{ span: '2', class: 'airbnb cost-calc' }
+        %col{ span: '2', class: 'monthly-calc' }
+        %col{ span: '4', class: 'airbnb' }
         %col{ span: '2', class: 'cost-calc' }
       %tbody
         = render @user_listings
+  = paginate @user_listings

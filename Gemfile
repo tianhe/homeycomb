@@ -42,6 +42,9 @@ gem 'spring',        group: :development
 gem 'rubillow'
 gem 'street_easy', source: 'https://gem.fury.io/thecarpelada/' #path: '../street_easy'
 
+#helpers
+gem 'kaminari'
+
 group :production do
   gem 'rails_12factor'
 end

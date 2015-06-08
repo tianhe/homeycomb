@@ -44,6 +44,7 @@ gem 'street_easy', source: 'https://gem.fury.io/thecarpelada/' #path: '../street
 
 #helpers
 gem 'kaminari'
+gem 'datagrid'
 
 group :production do
   gem 'rails_12factor'

@@ -1,0 +1,25 @@
+= render '/web/shared/navigation'
+
+.row
+  .col-xs-3
+  .col-xs-6
+    .input-wrapper
+      %h4
+        = "Edit User Listing"
+
+      .form-container.form
+        %form{id: "user_listing", "accept-charset"=> "UTF-8", action: user_listing_path(@user_listing), method: :post}
+          %input{name: '_method', value: 'patch', type: 'hidden'}
+          %input{name: 'authenticity_token', type: 'hidden', value: form_authenticity_token}
+          .form-group
+            %input.form-control{ name: "user_listing[percent_down]", placeholder: "20", value: @user_listing.percent_down }
+          .form-group
+            %input.form-control{ name: "user_listing[interest_rate]", placeholder: "3.5", value: @user_listing.interest_rate }
+          .form-group
+            %input.form-control{ name: "user_listing[airbnb_daily_total]", placeholder: "120", value: @user_listing.airbnb_daily_total }
+          .form-group
+            %input.form-control{ name: "user_listing[airbnb_fill_days]", placeholder: "8", value: @user_listing.airbnb_fill_days }
+          
+
+          %input.btn.btn-success.form-control#submit{ type: 'submit', value: 'Save'}
+  .col-xs-3

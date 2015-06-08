@@ -1,18 +1,4 @@
-%nav.navbar-fixed-top
-  .container-fluid
-    .navbar-header
-      = link_to '/', class: 'navbar-brand' do
-        =image_tag 'logo.png', alt: 'Homeycomb Logo', class: 'logo'
-    .collapse.navbar-collapse
-      %ul.nav.nav-pills.navbar-nav.navbar-right
-        %li.home
-          = link_to "Listings", web_user_listings_path
-        / %li.profile
-        /   = link_to profile_path do
-        /     %span.glyphicon.glyphicon-user
-        %li
-          = link_to logout_path do
-            %span.glyphicon.glyphicon-off
+= render '/web/shared/navigation'
 
 #main-container
   .row
@@ -23,7 +9,7 @@
       %thead
         %tr
           %th
-            URL
+            Title
           %th
             Neighborhood
           %th
@@ -33,7 +19,7 @@
           %th
             Sq Ft
           %th
-            Price
+            Listed Price
           %th
             Price/Sq Ft
           %th
@@ -41,9 +27,9 @@
           %th
             Interest Rate
           %th
-            Monthly Cost (Mort + CC + Tax)
+            = link_to 'Monthly Cost (Mort + CC + Tax)', user_listings_path(order: :gross_monthly_cost)
           %th
-            Monthly Cost (Net Tax Benefits)
+            = link_to 'Monthly Cost (Net Tax Benefits)', user_listings_path(order: :net_monthly_cost)
           %th
             Airbnb Rate
           %th
@@ -53,13 +39,13 @@
           %th
             Total (include Tax + Airbnb)
           %th
-            Initial Cash Required
+            = link_to 'Initial Cash Required', user_listings_path(order: :initial_cash_requirement)
           %th
-            5 Year Cash Requirement
+            = link_to '5 Year Cash Requirement', user_listings_path(order: :five_year_cash_requirement)
 
       %colgroup
         %col{ span: '7', class: 'basic-info' }
-        %col{ span: '2', class: 'input' }
+        %col{ span: '2', class: 'mortgage-assumptions' }
         %col{ span: '2', class: 'monthly-calc' }
         %col{ span: '4', class: 'airbnb' }
         %col{ span: '2', class: 'cost-calc' }

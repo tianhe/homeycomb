@@ -2,7 +2,7 @@ class UserListing
   include Mongoid::Document
 
   field :percent_down, type: Integer, default: 20
-  field :interest_rate, type: BigDecimal, default: 0.03625
+  field :interest_rate, type: BigDecimal, default: 3.625
   field :mortgage_years, type: Integer, default: 30
   field :mortgage, type: Integer, default: 0
   field :tax_rate, type: BigDecimal, default: 0.25
@@ -19,6 +19,16 @@ class UserListing
   field :rent_to_cost, type: BigDecimal, default: 0
   field :return_on_capital, type: BigDecimal, default: 0
   field :return_on_capital_including_airbnb, type: BigDecimal, default: 0
+  field :hidden, type: Boolean, default: false
+
+  delegate :area_name, to: :listing
+  delegate :url, to: :listing
+  delegate :title, to: :listing
+  delegate :bedrooms, to: :listing
+  delegate :status, to: :listing
+  delegate :size_sqft, to: :listing
+  delegate :price, to: :listing
+  delegate :ppsf, to: :listing
 
   field :closing_cost_percent, type: BigDecimal
   field :listing_id
@@ -36,6 +46,7 @@ class UserListing
   validates :net_monthly_rental_income, presence: true
   validates :rent_to_cost, presence: true
   validates :return_on_capital, presence: true
+  validates :listing_id, uniqueness: { scope: :user_id, message: 'should be unique for each user' }
 
   before_save :calculate_initial_cash_requirement
   before_save :calculate_monthly_cost
@@ -47,12 +58,16 @@ class UserListing
   before_save :calculate_return_on_capital
   before_save :calculate_return_on_capital_including_airbnb
 
+  scope :visible, -> { where(hidden: false) }
+  # scope :on_market, -> { joins(:listings).where() }
+  # scope :in_contract, -> { joings(:listings).where() }
+
   def calculate_initial_cash_requirement
     self.initial_cash_requirement = percent_down/100.0*listing.price
   end
 
   def calculate_monthly_cost
-    self.mortgage = listing.price*(1-percent_down/100.0)*(interest_rate/12.0*(1+interest_rate/12.0)**(mortgage_years*12.0))/((1.0+interest_rate/12.0)**(mortgage_years*12)-1.0)
+    self.mortgage = listing.price*(1-percent_down/100.0)*(interest_rate/100/12.0*(1+interest_rate/100/12.0)**(mortgage_years*12.0))/((1.0+interest_rate/100/12.0)**(mortgage_years*12)-1.0)
     self.gross_monthly_cost = self.mortgage + listing.maintenance + listing.taxes
     self.net_monthly_cost = self.gross_monthly_cost - listing.taxes*tax_rate - mortgage/3*tax_rate
   end

@@ -36,8 +36,20 @@ class User
   before_save :ensure_authentication_token
   before_validation :ensure_password
 
-  has_many :user_listings
+  before_save :ensure_search_setting
 
+  has_many :user_listings
+  
+  has_one :search_setting, dependent: :destroy
+  accepts_nested_attributes_for :search_setting
+
+  
+  has_one :profile, dependent: :destroy
+  accepts_nested_attributes_for :profile
+  delegate :mortgage_years, to: :profile
+  delegate :interest_rate, to: :profile
+  delegate :percent_down, to: :profile
+  delegate :tax_rate, to: :profile
 
   def self.new_with_session(params, session)
     super.tap do |user|
@@ -48,6 +60,14 @@ class User
   end
 
 private
+  def ensure_search_setting
+    self.build_search_setting unless self.search_setting
+  end
+
+  def ensure_profile
+    self.build_profile unless self.profile
+  end
+
   def ensure_password
     self.password ||= Devise.friendly_token.first(8)
   end

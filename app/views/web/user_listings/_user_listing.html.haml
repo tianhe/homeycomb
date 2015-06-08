@@ -34,6 +34,12 @@
   %td
     = number_to_currency user_listing.five_year_cash_requirement, precision: 0
   %td
+    - if user_listing.saved
+      = link_to user_listing_path(user_listing, user_listing: {saved: false}), method: :patch do
+        %span.glyphicon.glyphicon-star
+    - else
+      = link_to user_listing_path(user_listing, user_listing: {saved: true}), method: :patch do
+        %span.glyphicon.glyphicon-star-empty
     = link_to edit_user_listing_path(user_listing) do
       %span.glyphicon.glyphicon-edit
     = link_to user_listing_path(user_listing), method: :delete do

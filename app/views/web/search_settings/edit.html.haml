@@ -1,0 +1,69 @@
+= render '/web/shared/navigation'
+
+.row
+  .col-xs-3
+  .col-xs-6
+    .input-wrapper
+      %h4
+        = "My Preferences"
+
+      .form-container.form
+        %form{id: "search_setting", "accept-charset"=> "UTF-8", action: search_setting_path(@search_setting), method: :post}
+          %input{name: '_method', value: 'patch', type: 'hidden'}
+          %input{name: 'authenticity_token', type: 'hidden', value: form_authenticity_token}
+          .form-group
+            %label{ for: 'search_setting_area_name' }
+              Neighborhoods
+            %input.form-control{ name: "search_setting[area_name]", placeholder: "Fort Green, Lower East Side", value: @search_setting.area_name }
+            %label{ for: 'search_setting_unittype_label' }
+              Unit Type
+            %input.form-control{ name: "search_setting[unittype_label]", placeholder: "Townhouse, Condo, Co-op, Building, Apartment, Multi-family, Condop, Other type, House", value: @search_setting.unittype_label }
+          .form-group
+            %label{ for: 'search_setting_status' }
+              Listing Status - 1 (Open), 2 (In Contract), 3 (Off Market)
+            %input.form-control{ name: "search_setting[status]", placeholder: "1 (Open), 2 (In Contract), 3 (Off Market)", value: @search_setting.status }
+          .form-group
+            %label{ for: 'search_bedrooms' }
+              Bedrooms          
+            %input.form-control{ name: "search_setting[bedrooms]", placeholder: "0", value: @search_setting.bedrooms }
+          .form-group
+            %label{ for: 'search_setting_bathrooms' }
+              Bathooms          
+            %input.form-control{ name: "search_setting[bathrooms]", placeholder: "2", value: @search_setting.bathrooms }
+          .form-group
+            %label{ for: 'search_setting_size_sqft' }
+              Size in Sqft          
+            %input.form-control{ name: "search_setting[size_sqft]", placeholder: "500", value: @search_setting.size_sqft }
+
+          .form-group
+            %label{ for: 'search_setting_gross_monthly_cost' }
+              Maximum Gross Monthly Cost
+            %input.form-control{ name: "search_setting[gross_monthly_cost]", placeholder: "4000", value: @search_setting.gross_monthly_cost }
+          .form-group
+            %label{ for: 'search_setting_net_monthly_cost' }
+              Maximum Net Monthly Cost
+            %input.form-control{ name: "search_setting[net_monthly_cost]", placeholder: "4000", value: @search_setting.net_monthly_cost }
+          .form-group
+            %label{ for: 'search_setting_net_monthly_cost_including_airbnb' }
+              Maximum Net Monthly Cost Adjusted for Airbnb
+            %input.form-control{ name: "search_setting[net_monthly_cost_including_airbnb]", placeholder: "4000", value: @search_setting.net_monthly_cost_including_airbnb }
+          .form-group
+            %label{ for: 'search_setting_initial_cash_requirement' }
+              Maximum Initial Cash Requirement
+            %input.form-control{ name: "search_setting[initial_cash_requirement]", placeholder: "10000", value: @search_setting.initial_cash_requirement }
+          .form-group
+            %label{ for: 'search_setting_five_year_cash_requirement' }
+              Maximum Five Year Cash Requirement
+            %input.form-control{ name: "search_setting[five_year_cash_requirement]", placeholder: "140000", value: @search_setting.five_year_cash_requirement }
+          .form-group
+            %label{ for: 'search_setting_hidden' }
+              Display Hidden Posts
+            %input.form-control{ name: "search_setting[hidden]", type: 'checkbox', value: @search_setting.hidden }
+          .form-group
+            %label{ for: 'search_setting_saved' }
+              Display All Saved Posts
+            %input.form-control{ name: "search_setting[saved]", type: 'checkbox', value: @search_setting.saved }
+          
+
+          %input.btn.btn-success.form-control#submit{ type: 'submit', value: 'Save'}
+  .col-xs-3

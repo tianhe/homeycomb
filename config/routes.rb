@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
   scope module: :web do
     resources :user_listings
+    resources :search_settings
+    resources :profiles
   end
   # You can have the root of your site routed with "root"
   root 'welcome#index'

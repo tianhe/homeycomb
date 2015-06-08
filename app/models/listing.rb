@@ -36,6 +36,12 @@ class Listing
   validates :source_id, uniqueness: { scope: :source, message: 'should be unique for source' }
 
   has_many :user_listings
+  
+  after_save :update_user_listings
+  
+  def update_user_listings
+    
+  end
 
   def self.import_from_street_easy street_easy_listings
     filter_fields = Listing.fields.keys

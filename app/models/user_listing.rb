@@ -4,8 +4,9 @@ class UserListing
   field :percent_down, type: Integer, default: 20
   field :interest_rate, type: BigDecimal, default: 3.625
   field :mortgage_years, type: Integer, default: 30
-  field :mortgage, type: Integer, default: 0
-  field :tax_rate, type: BigDecimal, default: 0.25
+  field :tax_rate, type: BigDecimal, default: 25
+
+  field :mortgage, type: Integer, default: 0  
   field :gross_monthly_cost, type: Integer, default: 0
   field :net_monthly_cost, type: Integer, default: 0
   field :airbnb_daily_total, type: Integer, default: 100.0
@@ -20,7 +21,8 @@ class UserListing
   field :return_on_capital, type: BigDecimal, default: 0
   field :return_on_capital_including_airbnb, type: BigDecimal, default: 0
   field :hidden, type: Boolean, default: false
-
+  field :saved, type: Boolean, default: false
+  
   delegate :area_name, to: :listing
   delegate :url, to: :listing
   delegate :title, to: :listing
@@ -48,6 +50,8 @@ class UserListing
   validates :return_on_capital, presence: true
   validates :listing_id, uniqueness: { scope: :user_id, message: 'should be unique for each user' }
 
+  before_save :set_values_based_on_profile
+
   before_save :calculate_initial_cash_requirement
   before_save :calculate_monthly_cost
   before_save :calculate_airbnb_profit
@@ -62,6 +66,13 @@ class UserListing
   # scope :on_market, -> { joins(:listings).where() }
   # scope :in_contract, -> { joings(:listings).where() }
 
+  def set_values_based_on_profile
+    self.percent_down ||= user.percent_down
+    self.mortgage_years ||= user.mortgage_years
+    self.interest_rate ||= user.interest_rate
+    self.tax_rate ||= user.tax_rate
+  end
+
   def calculate_initial_cash_requirement
     self.initial_cash_requirement = percent_down/100.0*listing.price
   end
@@ -69,12 +80,12 @@ class UserListing
   def calculate_monthly_cost
     self.mortgage = listing.price*(1-percent_down/100.0)*(interest_rate/100/12.0*(1+interest_rate/100/12.0)**(mortgage_years*12.0))/((1.0+interest_rate/100/12.0)**(mortgage_years*12)-1.0)
     self.gross_monthly_cost = self.mortgage + listing.maintenance + listing.taxes
-    self.net_monthly_cost = self.gross_monthly_cost - listing.taxes*tax_rate - mortgage/3*tax_rate
+    self.net_monthly_cost = self.gross_monthly_cost - listing.taxes*tax_rate/100 - mortgage/3*tax_rate/100
   end
 
   def calculate_airbnb_profit
     self.airbnb_monthly_gross_profit = airbnb_daily_total * airbnb_fill_days  
-    self.net_monthly_cost_including_airbnb = net_monthly_cost - airbnb_monthly_gross_profit*(1-tax_rate)
+    self.net_monthly_cost_including_airbnb = net_monthly_cost - airbnb_monthly_gross_profit*(1-tax_rate/100)
   end
 
   def calculate_five_year_cash_requirement
@@ -82,7 +93,7 @@ class UserListing
   end
 
   def calculate_rental_income
-    self.net_monthly_rental_income = gross_monthly_rental_income * (1-tax_rate)
+    self.net_monthly_rental_income = gross_monthly_rental_income * (1-tax_rate/100)
   end
 
   def calculate_rent_to_cost

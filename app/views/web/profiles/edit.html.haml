@@ -1,0 +1,33 @@
+= render '/web/shared/navigation'
+
+.row
+  .col-xs-3
+  .col-xs-6
+    .input-wrapper
+      %h4
+        = "My Profile"
+
+      .form-container.form
+        %form{id: "profile", "accept-charset"=> "UTF-8", action: profile_path(@profile), method: :post}
+          %input{name: '_method', value: 'patch', type: 'hidden'}
+          %input{name: 'authenticity_token', type: 'hidden', value: form_authenticity_token}
+          .form-group
+            %label{ for: 'profile_percent_down' }
+              Percent Down
+            %input.form-control{ name: "profile[percent_down]", placeholder: "20", value: @profile.percent_down }
+          .form-group            
+            %label{ for: 'profile_interest_rate' }
+              Interest Rate
+            %input.form-control{ name: "profile[interest_rate]", placeholder: "3.625", value: @profile.interest_rate }
+          .form-group
+            %label{ for: 'profile_mortgage_years' }
+              Mortgage Years
+            %input.form-control{ name: "profile[mortgage_years]", placeholder: "30", value: @profile.mortgage_years }
+          .form-group
+            %label{ for: 'profile_tax_rate' }
+              Tax Rate
+            %input.form-control{ name: "profile[tax_rate]", placeholder: "38", value: @profile.tax_rate }
+          
+
+          %input.btn.btn-success.form-control#submit{ type: 'submit', value: 'Save'}
+  .col-xs-3

@@ -1,6 +1,5 @@
 class Web::UserListingsController < ApplicationController
   before_action :find_user_listing, except: [:index]
-  before_action :sort_params, only: [:index]
 
   def index
     @user_listings = current_user.user_listings
@@ -43,6 +42,6 @@ class Web::UserListingsController < ApplicationController
   end
 
   def user_listing_params
-    params.require(:user_listing).permit(:percent_down, :interest_rate, :airbnb_daily_total, :airbnb_fill_days)
+    params.require(:user_listing).permit(:percent_down, :interest_rate, :airbnb_daily_total, :airbnb_fill_days, :saved, :hidden)
   end
 end

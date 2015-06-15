@@ -30,7 +30,8 @@ class Listing
   field :source_id,       type: String
   field :source,          type: String
   field :source_created_at,  type: String
-
+  field :minimum_percent_down, type: Integer
+  
   validates :source_id, presence: true
   validates :source, presence: true
   validates :source_id, uniqueness: { scope: :source, message: 'should be unique for source' }

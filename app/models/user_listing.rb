@@ -1,10 +1,10 @@
 class UserListing
   include Mongoid::Document
 
-  field :percent_down, type: Integer, default: 20
-  field :interest_rate, type: BigDecimal, default: 3.625
-  field :mortgage_years, type: Integer, default: 30
-  field :tax_rate, type: BigDecimal, default: 25
+  field :percent_down, type: Integer
+  field :interest_rate, type: BigDecimal
+  field :mortgage_years, type: Integer
+  field :tax_rate, type: BigDecimal
 
   field :mortgage, type: Integer, default: 0  
   field :gross_monthly_cost, type: Integer, default: 0
@@ -33,25 +33,25 @@ class UserListing
   delegate :ppsf, to: :listing
 
   field :closing_cost_percent, type: BigDecimal
-  field :listing_id
 
   belongs_to :listing
   belongs_to :user
+
+  validates :listing_id, uniqueness: { scope: :user_id, message: 'should be unique for each user' }
 
   validates :percent_down, presence: true
   validates :interest_rate, presence: true
   validates :mortgage, presence: true
   validates :tax_rate, presence: true
+
   validates :initial_cash_requirement, presence: true
-  validates :five_year_cash_requirement, presence: true
   validates :gross_monthly_rental_income, presence: true
   validates :net_monthly_rental_income, presence: true
+  validates :five_year_cash_requirement, presence: true
   validates :rent_to_cost, presence: true
   validates :return_on_capital, presence: true
-  validates :listing_id, uniqueness: { scope: :user_id, message: 'should be unique for each user' }
 
   before_save :set_values_based_on_profile
-
   before_save :calculate_initial_cash_requirement
   before_save :calculate_monthly_cost
   before_save :calculate_airbnb_profit
@@ -67,10 +67,10 @@ class UserListing
   # scope :in_contract, -> { joings(:listings).where() }
 
   def set_values_based_on_profile
-    self.percent_down ||= user.percent_down
-    self.mortgage_years ||= user.mortgage_years
-    self.interest_rate ||= user.interest_rate
-    self.tax_rate ||= user.tax_rate
+    self.percent_down = Math.max(listing.minimum_percent_down, user.percent_down)
+    self.mortgage_years = user.mortgage_years
+    self.interest_rate = user.interest_rate
+    self.tax_rate = user.tax_rate
   end
 
   def calculate_initial_cash_requirement

@@ -35,6 +35,7 @@ class User
 
   before_save :ensure_authentication_token
   before_validation :ensure_password
+  before_create :ensure_profile
 
   before_save :ensure_search_setting
 

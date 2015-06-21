@@ -2,12 +2,12 @@ class SearchSetting
   include Mongoid::Document
   include Sidekiq::Delay
 
-  field :area_names,   type: String
+  field :area_names,   type: Array
   field :bedrooms,    type: Integer
   field :bathrooms,   type: Integer
   field :size_sqft,   type: Integer
-  field :unittype_labels,  type: String
-  field :statuses,          type: String
+  field :unittype_labels,  type: Array
+  field :statuses,          type: Array
 
   field :gross_monthly_cost, type: Integer
   field :net_monthly_cost, type: Integer
@@ -23,9 +23,8 @@ class SearchSetting
 
   after_update :update_user_listings
 
-  def update_user_listings
+  def update_user_listings    
     user.user_listings.delete_all
-
     listings.each do |listing|
       user.user_listings.create listing: listing
     end
@@ -33,13 +32,14 @@ class SearchSetting
 
   def listings
     query = %w(bedrooms bathrooms size_sqft).inject({}) do |attrs, attribute|
-      attrs[attribute.to_sym.gt] = self.attributes[attribute]
+      value = self.attributes[attribute]
+      attrs[attribute.to_sym.gte] = value if value.present?
       attrs
     end
     
     query = %w(statuses unittype_labels area_names).inject(query) do |attrs, attribute|
       value = self.attributes[attribute]
-      attrs[attribute.singularize.to_sym.in] = value.split(", ") unless value.blank?
+      attrs[attribute.singularize.to_sym.in] = value if value.present?
       attrs
     end
 

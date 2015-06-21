@@ -44,7 +44,7 @@ class Listing
     user_listings.delete_all
     
     User.all.each do |user|
-      user.user_listings.create listing: listing
+      user.user_listings.create listing: self
     end  
   end
 

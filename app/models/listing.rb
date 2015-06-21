@@ -24,17 +24,17 @@ class Listing
   field :unittype_label,  type: String
   field :status,          type: String
   field :floorplan,       type: String
-  field :price,         type: Integer
-  field :maintenance,   type: Integer
-  field :taxes,         type: Integer
+  field :price,         type: Integer, default: 0
+  field :maintenance,   type: Integer, default: 0
+  field :taxes,         type: Integer, default: 0
   field :source_id,       type: String
   field :source,          type: String
   field :source_created_at,  type: String
-  field :minimum_percent_down, type: Integer
+  field :minimum_percent_down, type: Integer, default: 0
   
   validates :source_id, presence: true
   validates :source, presence: true
-  validates :source_id, uniqueness: { scope: :source, message: 'should be unique for source' }
+  validates :source_id, uniqueness: { scope: :source, message: 'should be unique for source' }  
 
   has_many :user_listings
   

@@ -1,12 +1,13 @@
 class SearchSetting
   include Mongoid::Document
+  include Sidekiq::Delay
 
-  field :area_name,   type: String
+  field :area_names,   type: String
   field :bedrooms,    type: Integer
   field :bathrooms,   type: Integer
   field :size_sqft,   type: Integer
   field :unittype_labels,  type: String
-  field :status,          type: String
+  field :statuses,          type: String
 
   field :gross_monthly_cost, type: Integer
   field :net_monthly_cost, type: Integer
@@ -28,41 +29,32 @@ class SearchSetting
     listings.each do |listing|
       user.user_listings.create listing: listing
     end
-
-    retained_user_listings = user.user_listings.where(user_listing_query)
   end
 
   def listings
-    Listing.where(listing_query)
-  end
-
-
-  def user_listing_query
-    attrs = self.attributes
-    attrs.delete('_user_id')
-    attrs.delete('_id')
-
-    fields = %w(gross_monthly_cost net_monthly_cost net_monthly_cost_including_airbnb
-      initial_cash_requirement five_year_cash_requirement)
-    attrs = add_selector_to_fields(attrs, fields, 'lt')    
-  end
-
-  def listing_query
-    attrs = self.attributes
-    attrs.delete('_user_id')
-    attrs.delete('_id')
-
-    fields = %w(bedrooms bathrooms size_sqft)
-    attrs = add_selector_to_fields(attrs, fields, 'gt')
-    
-    fields = %w(unittype_labels)
-    attrs = add_selector_to_fields(attrs, fields, 'in')
-  end
-
-  def add_selector_to_fields attrs, keys, selector
-    keys.each do |key|
-      attrs["#{key}.#{selector}"] = attrs.delete(key)
+    query = %w(bedrooms bathrooms size_sqft).inject({}) do |attrs, attribute|
+      attrs[attribute.to_sym.gt] = self.attributes[attribute]
+      attrs
     end
-    attrs
+    
+    query = %w(statuses unittype_labels area_names).inject(query) do |attrs, attribute|
+      value = self.attributes[attribute]
+      attrs[attribute.singularize.to_sym.in] = value.split(", ") unless value.blank?
+      attrs
+    end
+
+    Listing.where(query)
   end
+
+  # def out_of_range_user_listings
+  #   out_of_range_query = %w(gross_monthly_cost net_monthly_cost net_monthly_cost_including_airbnb
+  #     initial_cash_requirement five_year_cash_requirement).inject({}) do |attrs, attribute|
+  #     value = self.attributes[attribute]
+  #     attrs[attribute.to_sym.lt] = value unless value.blank?
+  #     attrs
+  #   end
+
+  #   UserListing.where(out_of_range_query)
+  # end
+
 end

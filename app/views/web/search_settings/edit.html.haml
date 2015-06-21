@@ -12,16 +12,16 @@
           %input{name: '_method', value: 'patch', type: 'hidden'}
           %input{name: 'authenticity_token', type: 'hidden', value: form_authenticity_token}
           .form-group
-            %label{ for: 'search_setting_area_name' }
+            %label{ for: 'search_setting_area_names' }
               Neighborhoods
-            %input.form-control{ name: "search_setting[area_name]", placeholder: "Fort Green, Lower East Side", value: @search_setting.area_name }
+            %input.form-control{ name: "search_setting[area_names]", placeholder: "Fort Green, Lower East Side", value: @search_setting.area_names }
             %label{ for: 'search_setting_unittype_labels' }
               Unit Type
             %input.form-control{ name: "search_setting[unittype_labels]", placeholder: "Townhouse, Condo, Co-op, Building, Apartment, Multi-family, Condop, Other type, House", value: @search_setting.unittype_labels }
           .form-group
-            %label{ for: 'search_setting_status' }
+            %label{ for: 'search_setting_statuses' }
               Listing Status - 1 (Open), 2 (In Contract), 3 (Off Market)
-            %input.form-control{ name: "search_setting[status]", placeholder: "1 (Open), 2 (In Contract), 3 (Off Market)", value: @search_setting.status }
+            %input.form-control{ name: "search_setting[statuses]", placeholder: "1 (Open), 2 (In Contract), 3 (Off Market)", value: @search_setting.statuses }
           .form-group
             %label{ for: 'search_bedrooms' }
               Bedrooms          

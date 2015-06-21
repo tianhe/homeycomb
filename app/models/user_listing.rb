@@ -44,6 +44,8 @@ class UserListing
   validates :mortgage, presence: true
   validates :tax_rate, presence: true
 
+  validate :satisfy_search_setting
+
   validates :initial_cash_requirement, presence: true
   validates :gross_monthly_rental_income, presence: true
   validates :net_monthly_rental_income, presence: true
@@ -51,26 +53,44 @@ class UserListing
   validates :rent_to_cost, presence: true
   validates :return_on_capital, presence: true
 
-  before_save :set_values_based_on_profile
-  before_save :calculate_initial_cash_requirement
-  before_save :calculate_monthly_cost
-  before_save :calculate_airbnb_profit
-  before_save :calculate_five_year_cash_requirement
+  before_validation :set_values_based_on_profile
+  before_validation :calculate_initial_cash_requirement
+  before_validation :calculate_monthly_cost
+  before_validation :calculate_airbnb_profit
+  before_validation :calculate_five_year_cash_requirement
 
-  before_save :calculate_rental_income
-  before_save :calculate_rent_to_cost
-  before_save :calculate_return_on_capital
-  before_save :calculate_return_on_capital_including_airbnb
+  before_validation :calculate_rental_income
+  before_validation :calculate_rent_to_cost
+  before_validation :calculate_return_on_capital
+  before_validation :calculate_return_on_capital_including_airbnb
 
   scope :visible, -> { where(hidden: false) }
   # scope :on_market, -> { joins(:listings).where() }
   # scope :in_contract, -> { joings(:listings).where() }
 
+  def satisfy_search_setting
+    if user.gross_monthly_cost && user.gross_monthly_cost <= self.gross_monthly_cost
+      errors.add(:user, 'gross monthly cost too high')
+    end
+    if user.net_monthly_cost && user.net_monthly_cost <= self.net_monthly_cost
+      errors.add(:user, 'net monthly cost too high')
+    end
+    if user.net_monthly_cost_including_airbnb && user.net_monthly_cost_including_airbnb <= self.net_monthly_cost_including_airbnb
+      errors.add(:user, 'net monthly cost including airbnb')
+    end
+    if user.initial_cash_requirement && user.initial_cash_requirement <= self.initial_cash_requirement
+      errors.add(:user, 'initial cash requirement too high')
+    end
+    if user.five_year_cash_requirement && user.five_year_cash_requirement <= self.five_year_cash_requirement
+      errors.add(:user, 'give year cash requirement too high')
+    end
+  end
+
   def set_values_based_on_profile
-    self.percent_down = Math.max(listing.minimum_percent_down, user.percent_down)
-    self.mortgage_years = user.mortgage_years
-    self.interest_rate = user.interest_rate
-    self.tax_rate = user.tax_rate
+    self.percent_down ||= [listing.minimum_percent_down || 0, user.percent_down].max
+    self.mortgage_years ||= user.mortgage_years
+    self.interest_rate ||= user.interest_rate
+    self.tax_rate ||= user.tax_rate
   end
 
   def calculate_initial_cash_requirement

@@ -51,6 +51,12 @@ class User
   delegate :percent_down, to: :profile
   delegate :tax_rate, to: :profile
 
+  delegate :gross_monthly_cost, to: :search_setting
+  delegate :net_monthly_cost, to: :search_setting 
+  delegate :net_monthly_cost_including_airbnb, to: :search_setting
+  delegate :initial_cash_requirement, to: :search_setting 
+  delegate :five_year_cash_requirement, to: :search_setting
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]

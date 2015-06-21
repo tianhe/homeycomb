@@ -22,6 +22,7 @@ gem 'turbolinks'
 
 #background job
 gem 'sidekiq'
+gem 'sidekiq-delay'
 gem 'sinatra', require: nil
 
 #core

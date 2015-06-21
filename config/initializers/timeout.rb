@@ -1,2 +1,4 @@
 # config/initializers/timeout.rb
-Rack::Timeout.timeout = 10  # seconds
+if Rails.env.production?
+  Rack::Timeout.timeout = 10  # seconds
+end

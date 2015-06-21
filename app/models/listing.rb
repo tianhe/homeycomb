@@ -41,7 +41,11 @@ class Listing
   after_save :update_user_listings
   
   def update_user_listings
+    user_listings.delete_all
     
+    User.all.each do |user|
+      user.user_listings.create listing: listing
+    end  
   end
 
   def self.import_from_street_easy street_easy_listings

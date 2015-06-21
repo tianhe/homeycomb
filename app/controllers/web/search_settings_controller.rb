@@ -10,7 +10,7 @@ class Web::SearchSettingsController < ApplicationController
     else
       flash[:error] = 'Update failed'
     end
-    redirect_to edit_search_setting_path(@search_setting)
+    redirect_to edit_search_setting_path(params[:id])
   end
 
   private

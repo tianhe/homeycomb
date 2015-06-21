@@ -2,12 +2,12 @@ class SearchSetting
   include Mongoid::Document
   include Sidekiq::Delay
 
-  field :area_names,   type: Array
   field :bedrooms,    type: Integer
   field :bathrooms,   type: Integer
   field :size_sqft,   type: Integer
-  field :unittype_labels,  type: Array
-  field :statuses,          type: Array
+  field :area_names,   type: Array, default: []
+  field :unittype_labels,  type: Array, default: []
+  field :statuses,          type: Array, default: []
 
   field :gross_monthly_cost, type: Integer
   field :net_monthly_cost, type: Integer
@@ -21,9 +21,7 @@ class SearchSetting
 
   belongs_to :user
 
-  after_update :update_user_listings
-
-  def update_user_listings    
+  def update_user_listings
     user.user_listings.delete_all
     listings.each do |listing|
       user.user_listings.create listing: listing

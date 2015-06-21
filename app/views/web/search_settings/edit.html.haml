@@ -14,14 +14,14 @@
           .form-group
             %label{ for: 'search_setting_area_names' }
               Neighborhoods
-            %input.form-control{ name: "search_setting[area_names]", placeholder: "Fort Green, Lower East Side", value: @search_setting.area_names }
+            %input.form-control{ name: "search_setting[area_names]", placeholder: "Fort Green, Lower East Side", value: @search_setting.area_names.join(",") }
             %label{ for: 'search_setting_unittype_labels' }
               Unit Type
-            %input.form-control{ name: "search_setting[unittype_labels]", placeholder: "Townhouse, Condo, Co-op, Building, Apartment, Multi-family, Condop, Other type, House", value: @search_setting.unittype_labels }
+            %input.form-control{ name: "search_setting[unittype_labels]", placeholder: "Townhouse, Condo, Co-op, Building, Apartment, Multi-family, Condop, Other type, House", value: @search_setting.unittype_labels.join(",") }
           .form-group
             %label{ for: 'search_setting_statuses' }
               Listing Status - 1 (Open), 2 (In Contract), 3 (Off Market)
-            %input.form-control{ name: "search_setting[statuses]", placeholder: "1 (Open), 2 (In Contract), 3 (Off Market)", value: @search_setting.statuses }
+            %input.form-control{ name: "search_setting[statuses]", placeholder: "1 (Open), 2 (In Contract), 3 (Off Market)", value: @search_setting.statuses.join(",") }
           .form-group
             %label{ for: 'search_bedrooms' }
               Bedrooms          

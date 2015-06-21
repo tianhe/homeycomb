@@ -28,7 +28,7 @@ gem 'sinatra', require: nil
 #core
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'unicorn'
-gem 'rack-timeout'
+#gem 'rack-timeout'
 
 #social
 gem 'devise'

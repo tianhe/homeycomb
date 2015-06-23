@@ -58,6 +58,13 @@ class User
   delegate :initial_cash_requirement, to: :search_setting 
   delegate :five_year_cash_requirement, to: :search_setting
 
+  delegate :area_names, to: :search_setting
+  delegate :bathrooms, to: :search_setting
+  delegate :bedrooms, to: :search_setting
+  delegate :statuses, to: :search_setting
+  delegate :size_sqft, to: :search_setting
+  delegate :unittype_labels, to: :search_setting
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]

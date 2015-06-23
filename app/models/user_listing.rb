@@ -27,8 +27,10 @@ class UserListing
   delegate :url, to: :listing
   delegate :title, to: :listing
   delegate :bedrooms, to: :listing
+  delegate :bathrooms, to: :listing
   delegate :status, to: :listing
   delegate :size_sqft, to: :listing
+  delegate :unittype_label, to: :listing
   delegate :price, to: :listing
   delegate :ppsf, to: :listing
 
@@ -52,6 +54,8 @@ class UserListing
   validates :five_year_cash_requirement, presence: true
   validates :rent_to_cost, presence: true
   validates :return_on_capital, presence: true
+  validates :listing_id, presence: true
+  validates :user_id, presence: true
 
   before_validation :set_values_based_on_profile
   before_validation :calculate_initial_cash_requirement
@@ -70,20 +74,49 @@ class UserListing
 
   def satisfy_search_setting
     if user.gross_monthly_cost && user.gross_monthly_cost <= self.gross_monthly_cost
-      errors.add(:user, 'gross monthly cost too high')
+      errors.add(:gross_monthly_cost, 'too high')
     end
+
     if user.net_monthly_cost && user.net_monthly_cost <= self.net_monthly_cost
-      errors.add(:user, 'net monthly cost too high')
+      errors.add(:net_monthly_cost, 'too high')
     end
+
     if user.net_monthly_cost_including_airbnb && user.net_monthly_cost_including_airbnb <= self.net_monthly_cost_including_airbnb
-      errors.add(:user, 'net monthly cost including airbnb')
+      errors.add(:net_monthly_cost_including_airbnb, 'too high')
     end
+
     if user.initial_cash_requirement && user.initial_cash_requirement <= self.initial_cash_requirement
-      errors.add(:user, 'initial cash requirement too high')
+      errors.add(:initial_cash_requirement, 'too high')
     end
+
     if user.five_year_cash_requirement && user.five_year_cash_requirement <= self.five_year_cash_requirement
-      errors.add(:user, 'give year cash requirement too high')
+      errors.add(:five_year_cash_requirement, 'too high')
     end
+
+    if user.area_names.present? && !user.area_names.include?(self.area_name)
+      errors.add(:area_name, 'doesnt match search setting')
+    end
+
+    if user.statuses.present? && !user.statuses.include?(self.status)
+      errors.add(:status, 'doesnt match search setting')
+    end
+
+    if user.unittype_labels.present? && !user.unittype_labels.include?(self.unittype_label)
+      errors.add(:unittype_label, 'doesnt match search setting')
+    end
+
+    if user.size_sqft.present? && user.size_sqft >= self.size_sqft
+      errors.add(:size_sqft, 'too small')
+    end
+
+    if user.bedrooms.present? && user.bedrooms >= self.bedrooms
+      errors.add(:bedrooms, 'too few')
+    end
+
+    if user.bathrooms.present? && user.bathrooms >= self.bathrooms
+      errors.add(:bathrooms, 'too few')
+    end
+
   end
 
   def set_values_based_on_profile
